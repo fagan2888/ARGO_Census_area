@@ -1,0 +1,29 @@
+Currently the code to run is in test.py
+
+This Python library extends the Sunlight Foundation's Census API Wrapper to allow querying Census tracts, block groups, and blocks by Census place, as well as by arbitrary geographies.
+
+To run this you must make an instance of the class 'reaggregation', and call the function 'variable_reaggregation'
+You must have the libraries numpy, requests, json and math installed.
+
+The core function takes on the following format:
+
+"def variable_reaggregagion(self, census_API_key, target_variable, geometry, type_of_statistic, year)"
+
+There are 5 inputs the user must specify: 
+
+census_API_key: The user’s API key, can be requested at https://api.census.gov/data/key_signup.html
+
+target_variable: the variable that the user wants to aggregate
+
+geometry: the name of the file of the desired geometry for the variable aggregation, for example Water District 10. Make sure to have this in a geojson file format and the polygon be referred to through this path geometry['features'][0]['geometry']. 
+
+type_of_statistic: The 3 options are ‘count’, ‘per_capita’, ’per_household’ and the user must input one of these. 
+These statistics relate to the types of aggregation. count will output a sum aggregation, and per_* will output an average.
+For count we use the percentage of the census tract area that intersects with the input geometry to create an estimate of the target variable for the specified geometry. For per_capita statistics we use the estimated census tract population that intersects with the input geometry to create an estimate of the target variable for the specified geometry.  For per_household statistics we use the estimated household count of the census tracts that intersect with the input geometry, to create an estimate of the target variable for the specified geometry. 
+Sum is the total of the target variable in the specified geometry.
+Average is the average of the target variable in the specified geometry.
+
+Year: year of census. 4 digits. The years availible are 2015, 2014, 2013, 2012, 2011, 2010, 2000 and 1990
+
+Here is an example of how to run the class
+reaggregagion().variable_reaggregagion(API_KEY, 'B19301_001E', my_shape_geojson, 'per_capita', 2015)
